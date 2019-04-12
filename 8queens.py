@@ -1,18 +1,12 @@
 class Queen:
     def __init__(self, row, column):
-        self._row = row
-        self._column = column
-
-    def getRow(self):
-        return self._row
-    
-    def getColumn(self):
-        return self._column
+        self.row = row
+        self.column = column
     
     def canAttack(self, row, column):
-        canAttackVertically   = (self._column == column)
-        canAttackHorizontally = (self._row == row)
-        canAttackDiagonally   = (self._row - row == self._column - column)
+        canAttackVertically   = (self.column == column)
+        canAttackHorizontally = (self.row == row)
+        canAttackDiagonally   = (self.row - row == self.column - column)
 
         return canAttackVertically or canAttackHorizontally or canAttackDiagonally
 
@@ -23,7 +17,7 @@ class NQueens:
 
     def contains(self, row, column):
         for queen in self._queens:
-            if queen.getRow() == row and queen.getColumn() == column:
+            if queen.row == row and queen.column == column:
                 return True
         return False
 
@@ -50,3 +44,23 @@ class NQueens:
                 numberOfConflicts += 1
         return numberOfConflicts
     
+    # Moves a Queen from the position (originalRow, originalColumn) to the new position (newRow, newColumn)
+    # Returns True if the change was made, False otherwise
+    def moveQueen(self, originalRow, originalColumn, newRow, newColumn):
+        if not self.contains(originalRow, originalColumn) or self.contains(newRow, newColumn):
+            return False
+        else:
+            for queen in self._queens:
+                if queen.row == originalRow and queen.column == originalColumn:
+                    queen.row    = newRow
+                    queen.column = newColumn
+                    return True
+    
+    # Returns if the solution is valid (ie. no queens conflict)
+    def isValid(self):
+        for i in range(len(self._queens) - 1):
+            for j in range(i + 1, len(self._queens)):
+                if self._queens[i].canAttack(self._queens[j]):
+                    return False
+        return True
+
