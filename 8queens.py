@@ -9,10 +9,10 @@ class Queen:
     def getColumn(self):
         return self._column
     
-    def canAttack(self, queen):
-        canAttackVertically   = (self._column == queen._column)
-        canAttackHorizontally = (self._row == queen._row)
-        canAttackDiagonally   = (self._row - queen._row == self._column - queen._column)
+    def canAttack(self, row, column):
+        canAttackVertically   = (self._column == column)
+        canAttackHorizontally = (self._row == row)
+        canAttackDiagonally   = (self._row - row == self._column - column)
 
         return canAttackVertically or canAttackHorizontally or canAttackDiagonally
 
@@ -41,4 +41,12 @@ class NQueens:
         else:
             self._queens.append(Queen(row, column))
             return True
+
+    # Returns the number of conflicts at the position (row, column)
+    def getNumberOfConflicts(self, row, column):
+        numberOfConflicts = 0
+        for queen in self._queens:
+            if queen.canAttack(row, column):
+                numberOfConflicts += 1
+        return numberOfConflicts
     
